@@ -102,7 +102,21 @@ def profile(request, pk):
     rooms = user.room_set.all()
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
-    context = {"user": user, "rooms": rooms, "room_messages": room_messages, "topics":topics}
+
+    # Dev Passport Metrics
+    completed_count = rooms.filter(is_completed=True).count()
+    total_sprints_count = rooms.count()
+    contributions_count = room_messages.count()
+
+    context = {
+        "user": user,
+        "rooms": rooms,
+        "room_messages": room_messages,
+        "topics": topics,
+        "completed_count": completed_count,
+        "total_sprints_count": total_sprints_count,
+        "contributions_count": contributions_count,
+    }
     return render(request, "base/profile.html", context)
 
 @login_required(login_url="login")
@@ -117,6 +131,8 @@ def CreateRoom(request):
             topic=topic,
             name=request.POST.get("name"),
             description= request.POST.get("description"),
+            github_url=request.POST.get("github_url"),
+            demo_url=request.POST.get("demo_url"),  
         )
         return redirect("home")
     context = {"form": form, "topics":topics}
@@ -136,10 +152,13 @@ def updateRoom(request, pk):
         room.name = request.POST.get("name")
         room.topic = topic
         room.description = request.POST.get("description")
+        room.github_url = request.POST.get("github_url")
+        room.demo_url = request.POST.get("demo_url")
+        room.is_completed = 'is_completed' in request.POST
         room.save()
         return redirect("home")
 
-    context = {"form": form, "topics": topics}
+    context = {"form": form, "topics": topics, "room": room}
     return render(request, "base/room_form.html", context)
 
 @login_required(login_url="login")

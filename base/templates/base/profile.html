@@ -1,47 +1,62 @@
 {% extends 'main.html' %} {% block content%}
-  <main class="profile-page layout layout--3">
-    <div class="container">
-      <!-- Topics Start -->
-      {% include 'base/topics_component.html' %}
-      <!-- Topics End -->
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Topics Start -->
+    {% include 'base/topics_component.html' %}
+    <!-- Topics End -->
 
-      <!-- Room List Start -->
-      <div class="roomList">
-        <div class="profile">
-          <div class="profile__avatar">
-            <div class="avatar avatar--large active">
-              <img src="{{ user.avatar.url }}" />
-            </div>
-          </div>
-          <div class="profile__info">
-            <h3>{{user.username}}</h3>
-            <p>@{{user.username}}</p>
-            {% if request.user == user %}
-            <a href="{% url 'update-user'%}" class="btn btn--main btn--pill">Edit Profile</a>
-            {% endif %}
-          </div>
-          <div class="profile__about">
-            <h3>About</h3>
-            <p>
-              {{ user.bio|default:"No bio yet." }}
-            </p>
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large active">
+            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" />
           </div>
         </div>
+        <div class="profile__info">
+          <h3>{{user.username}}</h3>
+          <p>@{{user.username}}</p>
+          {% if request.user == user %}
+          <a href="{% url 'update-user'%}" class="btn btn--main btn--pill">Edit Profile</a>
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          <h3>About</h3>
+          <p>{{ user.bio|default:"No bio yet." }}</p>
+        </div>
 
-        <div class="roomList__header">
-          <div>
-            <h2>Sprints Hosted by {{user.username}}</h2>
+        <!-- 🚀 Dev Passport Stats Grid -->
+        <div class="passport-grid">
+          <div class="passport-stat">
+            <span class="passport-stat__number passport-stat__number--indigo">{{ total_sprints_count }}</span>
+            <span class="passport-stat__label">Sprints</span>
+          </div>
+
+          <div class="passport-stat passport-stat--shipped">
+            <span class="passport-stat__number passport-stat__number--emerald">{{ completed_count }}</span>
+            <span class="passport-stat__label passport-stat__label--emerald">Shipped</span>
+          </div>
+
+          <div class="passport-stat">
+            <span class="passport-stat__number passport-stat__number--cyan">{{ contributions_count }}</span>
+            <span class="passport-stat__label">Contributions</span>
           </div>
         </div>
-        
-        {% include 'base/feed_component.html' %}
-      </div>  
-      <!-- Room List End -->
+      </div>
 
-      <!-- Activities Start -->
-      {% include 'base/activity_component.html' %}
-      <!-- Activities End -->
+      <div class="roomList__header">
+        <div>
+          <h2>Sprints Hosted by {{user.username}}</h2>
+        </div>
+      </div>
+
+      {% include 'base/feed_component.html' %}
     </div>
-  </main>
+    <!-- Room List End -->
+
+    <!-- Activities -->
+    {% include 'base/activity_component.html' %}
+  </div>
+</main>
 
 {% endblock %}

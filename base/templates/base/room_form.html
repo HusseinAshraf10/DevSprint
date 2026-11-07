@@ -20,7 +20,13 @@
           {% csrf_token %}
           <div class="form__group">
             <label for="room_topic">Topic / Technology Stack</label>
-            <input required type="text" name="topic" value="{{room.topic.name}}" list="topic_list" placeholder="e.g. Django, React, Python, PostgreSQL..." />
+            <input
+              required
+              type="text"
+              name="topic"
+              value="{{room.topic.name}}"
+              list="topic_list"
+              placeholder="e.g. Django, React, Python, PostgreSQL..." />
             <datalist id="topic_list">
               <select id="room_topic">
                 {% for topic in topics %}
@@ -40,11 +46,43 @@
             {{form.description}}
           </div>
 
+          <div class="form__group">
+            <label for="github_url">GitHub Repository URL (Optional)</label>
+            <input
+              type="url"
+              name="github_url"
+              id="github_url"
+              value="{{room.github_url|default:''}}"
+              placeholder="https://github.com/username/project" />
+          </div>
+
+          <div class="form__group">
+            <label for="demo_url">Live Demo URL (Optional)</label>
+            <input
+              type="url"
+              name="demo_url"
+              id="demo_url"
+              value="{{room.demo_url|default:''}}"
+              placeholder="https://yourproject.com" />
+          </div>
+
+          {% if room.id %}
+          <div class="form__group" style="flex-direction: row; align-items: center; gap: 1rem; padding: 1rem 0;">
+            <input
+              type="checkbox"
+              name="is_completed"
+              id="is_completed"
+              style="width: 2rem; height: 2rem; accent-color: var(--color-main);"
+              {% if room.is_completed %}checked{% endif %} />
+            <label for="is_completed" style="text-transform: none; font-size: 1.4rem; cursor: pointer; margin: 0;">
+              🏁 <strong>Mark Sprint as Shipped / Completed</strong>
+            </label>
+          </div>
+          {% endif %}
+
           <div class="form__action">
             <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
-            <button class="btn btn--main" type="submit">
-              {% if room.id %}Save Changes{% else %}Launch Sprint{% endif %}
-            </button>
+            <button class="btn btn--main" type="submit">{% if room.id %}Save Changes{% else %}Launch Sprint{% endif %}</button>
           </div>
         </form>
       </div>
