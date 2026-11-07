@@ -5,21 +5,21 @@
     <div class="layout__box">
       <div class="layout__boxHeader">
         <div class="layout__boxTitle">
-          <h3>Login</h3>
+          <h3>Welcome Back</h3>
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Find your study partner</h2>
+        <h2 class="auth__tagline">Sign in to DevSprint</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
-          <div class="form__group form__group">
-            <label for="room_name">Username</label>
-            <input id="username" name="username" type="text" placeholder="e.g. dennis_ivy" />
+          <div class="form__group">
+            <label for="username">Email Address</label>
+            <input id="username" name="email" type="email" placeholder="name@domain.com" required autocomplete="email" />
           </div>
           <div class="form__group">
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+            <input id="password" name="password" type="password" placeholder="••••••••" required />
           </div>
 
           <button class="btn btn--main" type="submit">
@@ -30,14 +30,13 @@
               <path
                 d="M15 21.694v4.306h2v-4.306c0.587-0.348 1-0.961 1-1.694 0-1.105-0.895-2-2-2s-2 0.895-2 2c0 0.732 0.413 1.345 1 1.694z"></path>
             </svg>
-
-            Login
+            Sign In
           </button>
         </form>
 
         <div class="auth__action">
-          <p>Haven't signed up yet?</p>
-          <a href="{% url 'register' %}" class="btn btn--link">Sign Up</a>
+          <p>Don't have an account yet?</p>
+          <a href="{% url 'register' %}" class="btn btn--link">Create an Account</a>
         </div>
       </div>
     </div>
@@ -47,18 +46,21 @@
     <div class="layout__box">
       <div class="layout__boxHeader">
         <div class="layout__boxTitle">
-          <h3>Register</h3>
+          <h3>Create an Account</h3>
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Find your study partner</h2>
+        <h2 class="auth__tagline">Join the DevSprint community</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
-          {%for field in form %}
-          <div class="form__group form__group">
-            <label for="room_name">{{field.label}}</label>
+          {% for field in form %}
+          <div class="form__group">
+            <label>{{field.label}}</label>
             {{field}}
+            {% if field.help_text %}
+            <small class="form__help">{{field.help_text}}</small>
+            {% endif %}
           </div>
           {% endfor %}
 
@@ -70,18 +72,17 @@
               <path
                 d="M15 21.694v4.306h2v-4.306c0.587-0.348 1-0.961 1-1.694 0-1.105-0.895-2-2-2s-2 0.895-2 2c0 0.732 0.413 1.345 1 1.694z"></path>
             </svg>
-
-            Register
+            Sign Up
           </button>
         </form>
 
         <div class="auth__action">
-          <p>Already signed up!</p>
-          <a href="{% url 'login' %}" class="btn btn--link">Sign Up</a>
+          <p>Already have an account?</p>
+          <a href="{% url 'login' %}" class="btn btn--link">Log In</a>
         </div>
       </div>
     </div>
   </div>
+  {% endif %}
 </main>
-
-{% endif %} {% endblock content%}
+{% endblock content%}

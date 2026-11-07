@@ -3,19 +3,18 @@
   <div class="roomListRoom__header">
     <a href="{% url 'user-profile' room.host.id %}" class="roomListRoom__author">
       <div class="avatar avatar--small">
-        <img src="https://randomuser.me/api/portraits/women/11.jpg" />
+        <img src="{{room.host.avatar.url}}" alt="{{room.host.username}}" />
       </div>
       <span>@{{room.host.username}}</span>
     </a>
     <div class="roomListRoom__actions">
-      <span>{{room.created| timesince}} ago</span>
+      <span>{{room.created|timesince}} ago</span>
     </div>
   </div>
   <div class="roomListRoom__content">
     <a href="{% url 'room' room.id %}">{{room.name}}</a>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur ducimus harum dolorem, obcaecati mollitia omnis quasi aut
-      consequuntur enim itaque labore.
+      {{ room.description|default:"No description provided for this sprint."|truncatewords:28 }}
     </p>
   </div>
   <div class="roomListRoom__meta">
@@ -33,7 +32,14 @@
       </svg>
       {{room.participants.all.count}} Joined
     </a>
-    <p class="roomListRoom__topic">{{room.topic}}</p>
+    <a href="{% url 'home' %}?q={{room.topic.name}}" class="roomListRoom__topic">{{room.topic.name}}</a>
   </div>
+</div>
+{% empty %}
+<div class="empty-state">
+  <div class="empty-state__icon">🚀</div>
+  <h3>No sprint rooms found</h3>
+  <p>Be the first developer to start a sprint on this topic!</p>
+  <a href="{% url 'create-room' %}" class="btn btn--main btn--pill">Start a Sprint</a>
 </div>
 {% endfor %}
